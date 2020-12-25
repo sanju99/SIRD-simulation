@@ -135,10 +135,10 @@ def plot_r0(R0, N):
     p = iqplot.histogram(r0,
                          rug=False,
                          height=400,
-                         title=f"Geometric Distribution in a Population of {N} with R\u2080 = {R0}",
                          x_axis_label="Number of Contacts Infected")
     
-    p.title.text_font_size = '11pt'
+    p.add_layout(bokeh.models.Title(text=f"Population = {N},  R\u2080 = {R0}", text_font_size="14pt"), 'above')
+    p.add_layout(bokeh.models.Title(text="Geometric Distribution", text_font_size="14pt"), 'above')
     
     return p
 
@@ -207,7 +207,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Width of the lines
     w = 2
 
-    p_results = bokeh.plotting.figure(height=400, width=700,
+    p_results = bokeh.plotting.figure(height=400, width=725,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Simulation Results",
