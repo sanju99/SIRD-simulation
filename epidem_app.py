@@ -254,7 +254,7 @@ def update_r0(event):
 
 def update_results(event): 
     
-    plot1 = bokeh.plotting.figure(height=400, width=580,
+    plot1 = bokeh.plotting.figure(height=400, width=600,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Loading...",
