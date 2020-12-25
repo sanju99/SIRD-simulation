@@ -241,7 +241,7 @@ plot_results = run_plot_simulation(N_input.value, R0_input.value,
 layout = pn.Column(
         widgets,
         pn.Spacer(height=10),
-        pn.Row(plot_r0(R0_input.value, N_input.value), pn.Spacer(width=20), 
+        pn.Row(plot_r0(R0_input.value, N_input.value), pn.Spacer(width=30), 
                plot_results)
     )
 
