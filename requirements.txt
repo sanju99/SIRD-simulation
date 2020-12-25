@@ -1,12 +1,6 @@
 certifi==2019.6.16
 chardet==3.0.4
 Click==7.0
-dash==1.1.1
-dash-core-components==1.1.1
-dash-html-components==1.0.0
-dash-renderer==1.0.0
-dash-table==4.1.0
-dask==2.1.0
 decorator==4.4.0
 Flask==1.1.1
 Flask-Compress==1.4.0
@@ -19,7 +13,6 @@ Jinja2==2.10.1
 jupyter-core==4.5.0
 MarkupSafe==1.1.1
 nbformat==4.4.0
-numpy==1.16.4
 pandas==0.24.2
 plotly==4.1.0
 pytz==2019.1
@@ -35,7 +28,6 @@ conda-verify==3.4.2
 datashader @ file:///tmp/build/80754af9/datashader_1597685528274/work
 holoviews @ file:///tmp/build/80754af9/holoviews_1600379285602/work
 holoviz==0.11.6
-html5lib @ file:///tmp/build/80754af9/html5lib_1593446221756/work
 hvplot==0.6.0
 idna @ file:///tmp/build/80754af9/idna_1593446292537/work
 imageio @ file:///tmp/build/80754af9/imageio_1594161405741/work
@@ -63,17 +55,6 @@ jupyter-core==4.6.3
 jupyterlab==2.2.6
 jupyterlab-server @ file:///tmp/build/80754af9/jupyterlab_server_1594164409481/work
 jupytext==1.8.0
-keyring @ file:///opt/concourse/worker/volumes/live/26708beb-87f4-4278-6025-46d3c5a95d63/volume/keyring_1598884776269/work
-kiwisolver==1.2.0
-lazy-object-proxy==1.4.3
-libarchive-c==2.9
-llvmlite==0.34.0
-locket==0.2.0
-lxml @ file:///opt/concourse/worker/volumes/live/d42457f0-83be-4fb6-6c8d-8f9319a861b0/volume/lxml_1594826854945/work
-Markdown @ file:///opt/concourse/worker/volumes/live/5a96809b-7d2c-48d2-655f-6893c3b3e6ce/volume/markdown_1597433261297/work
-markdown-it-py==0.6.0
-MarkupSafe @ file:///opt/concourse/worker/volumes/live/cb778296-98db-45ad-411e-6f726e102dc3/volume/markupsafe_1594371638608/work
-matplotlib==3.1.3
 mccabe==0.6.1
 mdit-py-plugins==0.2.4
 mistune @ file:///opt/concourse/worker/volumes/live/95802d64-d39c-491b-74ce-b9326880ca54/volume/mistune_1594373201816/work
@@ -81,12 +62,6 @@ mkl-fft==1.2.0
 mkl-random==1.1.1
 mkl-service==2.3.0
 mock==4.0.2
-more-itertools @ file:///tmp/build/80754af9/more-itertools_1598884071673/work
-mpmath==1.1.0
-msgpack==1.0.0
-multipledispatch==0.6.0
-multiprocess==0.70.11.1
-mypy-extensions==0.4.3
 navigator-updater==0.2.1
 nbconvert @ file:///opt/concourse/worker/volumes/live/70406b39-619d-477e-7507-0cc36a02f91a/volume/nbconvert_1594376816864/work
 nbformat==5.0.7
@@ -98,8 +73,6 @@ notebook @ file:///opt/concourse/worker/volumes/live/3ff7115c-cc67-4f6b-6e2e-c08
 numba @ file:///opt/concourse/worker/volumes/live/ae24c1ca-d916-4043-5919-a843fa33e451/volume/numba_1600084276085/work
 numexpr==2.7.1
 numpy==1.18.1
-numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
-olefile==0.46
 openpyxl @ file:///tmp/build/80754af9/openpyxl_1598113097404/work
 packaging==20.4
 pandas==1.0.3
@@ -213,15 +186,3 @@ Werkzeug==1.0.1
 widgetsnbextension==3.5.1
 wrapt==1.11.2
 wurlitzer @ file:///opt/concourse/worker/volumes/live/01a17f3d-eafe-4806-57a1-4b9ef5d1815f/volume/wurlitzer_1594753845129/work
-xarray==0.15.1
-xlrd==1.2.0
-XlsxWriter @ file:///tmp/build/80754af9/xlsxwriter_1600470809563/work
-xlwings==0.20.7
-xlwt==1.3.0
-xmltodict==0.12.0
-yapf @ file:///tmp/build/80754af9/yapf_1593528177422/work
-yarg==0.1.9
-zict==2.0.0
-zipp==3.1.0
-zope.event==4.4
-zope.interface @ file:///opt/concourse/worker/volumes/live/5516007f-dde5-4190-4cd8-261a3b099199/volume/zope.interface_1598624144360/work
