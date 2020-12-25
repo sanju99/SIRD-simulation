@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import math
 
 import bokeh.io
 import bokeh.plotting
@@ -40,7 +39,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
         elif min_infect <= days_sick[num] <= max_infect:
 
             # They infect the same number of people on each day of the infectious duration
-            num_new_infected += math.ceil(r0[num] / (max_infect - min_infect))
+            num_new_infected += np.ceil(r0[num] / (max_infect - min_infect))
             
             days_sick[num] += 1
 
