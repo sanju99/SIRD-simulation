@@ -9,8 +9,6 @@ import iqplot
 import panel as pn
 pn.extension()
 
-bokeh.io.output_notebook()
-
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death):
     
