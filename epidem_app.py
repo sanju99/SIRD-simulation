@@ -137,6 +137,9 @@ def plot_r0(R0, N):
                          height=400,
                          title=f"Geometric Distribution in a Population of {N} with R\u2080 = {R0}",
                          x_axis_label="Number of Contacts Infected")
+    
+    p.title.text_font_size = '11pt'
+    
     return p
 
 # Run the simulation and plot
@@ -225,6 +228,8 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Formatting
     p_results.add_layout(legend, 'right')
     p_results.xgrid.visible = False
+    p_results.title.text_font_size = '14pt'
+    p_results.legend.click_policy="hide"
 
     return p_results
 
@@ -243,12 +248,26 @@ layout = pn.Column(
 
 
 def update_r0(event): 
+    
     layout[2][0].object = plot_r0(R0_input.value, N_input.value)
 
 def update_results(event): 
-    layout[2][2].object = run_plot_simulation(N_input.value, R0_input.value, 
+    
+    plot1 = bokeh.plotting.figure(height=400, width=580,
+                                      x_axis_label="Days",
+                                      y_axis_label="Number of People",
+                                      title="Loading...",
+                                      toolbar_location="above")
+    
+    plot1.title.text_font_size = '14pt'
+    layout[2][2].object = plot1
+    
+    plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
+    
+    plot2.title.text_font_size = '14pt'
+    layout[2][2].object = plot2
     
 R0_input.param.watch(update_r0, 'value')
 N_input.param.watch(update_r0, 'value')
@@ -263,9 +282,3 @@ immune_slider.param.watch(update_results, 'value_throttled')
 
 
 layout.servable()
-
-
-
-
-
-
