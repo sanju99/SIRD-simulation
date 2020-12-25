@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import itertools
 
 import bokeh.io
 import bokeh.plotting
@@ -36,10 +37,10 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
                 num_dead += 1
 
         # If they are still in the infectious period, inclusive
-        elif min_infect <= days_sick[num] <= max_infect:
+        elif infectious_duration[0] <= days_sick[num] <= infectious_duration[1]:
 
             # They infect the same number of people on each day of the infectious duration
-            num_new_infected += np.ceil(r0[num] / (max_infect - min_infect))
+            num_new_infected += np.ceil(r0[num] / (infectious_duration[1] - infectious_duration[0]))
             
             days_sick[num] += 1
 
@@ -69,6 +70,9 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
 R0_input = pn.widgets.TextInput(name=u'R\u2080', value='2.5')
 N_input = pn.widgets.TextInput(name='Population Size', value='10000')
 
+illness_input = pn.widgets.TextInput(name='Duration of Illness (days)', value='14')
+
+# Create throttled widget for the death rate
 death_rate_slider = pn.widgets.IntSlider(
     name='Death Rate (%)', 
     start=0,
@@ -77,6 +81,7 @@ death_rate_slider = pn.widgets.IntSlider(
     value=5,
     value_throttled=5)
 
+# Create throttled widget for the number of immune people initially
 immune_slider = pn.widgets.IntSlider(
     name='Initial Immunity (%)', 
     start=0,
@@ -85,8 +90,14 @@ immune_slider = pn.widgets.IntSlider(
     value=0,
     value_throttled=0)
 
-init_sick_input = pn.widgets.TextInput(name='Initial Number of Infected People', value='5')
-illness_input = pn.widgets.TextInput(name='Duration of Illness (days)', value='14')
+# Create throttled widget for the number of people infected initially
+init_sick_slider = pn.widgets.IntSlider(
+    name='Number of Infected People Initially', 
+    start=0,
+    end=100,
+    step=1,
+    value=5,
+    value_throttled=5)
 
 # Create throttled infectious period widget 
 infectious_range = pn.widgets.RangeSlider(
@@ -101,9 +112,14 @@ infectious_range = pn.widgets.RangeSlider(
 @pn.depends(illness_input.param.value, watch=True)
 def update_infectious_range(duration):
     infectious_range.end = int(duration)
+    
+# The widget for the number of sick people initially depends on the population. The number of sick people must be <= 1% of the population
+@pn.depends(N_input.param.value, watch=True)
+def update_init_sick(population):
+    init_sick_slider.end = int(0.01*int(population))
 
 left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
-middle_col = pn.Column(init_sick_input, immune_slider, width=250)
+middle_col = pn.Column(init_sick_slider, immune_slider, width=250)
 right_col = pn.Column(illness_input, infectious_range, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
@@ -126,7 +142,7 @@ def plot_r0(R0, N):
 # Run the simulation and plot
 @pn.depends(N_input.param.value, 
             R0_input.param.value, 
-            init_sick_input.param.value, 
+            init_sick_slider.param.value_throttled, 
             illness_input.param.value,
             infectious_range.param.value,
             death_rate_slider.param.value_throttled,
@@ -145,6 +161,8 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Sick status. 1 = immune, start with some number of immune people
     num_immune = int(p_immune / 100.0 * N)
     people_array = np.concatenate((np.ones(num_immune), np.zeros(N - num_immune)))
+    
+    # Shuffle the group to increased randomization
     np.random.shuffle(people_array)
     
     # Get the indices of the susceptible people
@@ -161,7 +179,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     num_days = 0
     results = [(init_sick, num_immune, 0, len(indices_susceptible)-init_sick)]
 
-    # Call the infect_more_people function
+    # Call the infect_more_people function until there are no more sick people (epidemic stops)
     while list(people_array).count(-1) != 0:
 
         results.append(infect_more_people(r0, people_array, days_sick, illness_duration, infectious_duration, p_death))
@@ -171,11 +189,9 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     sick, immune, dead, susceptible = list(zip(*results))
     
     # Get cumulative deaths, rather than deaths on each day
-    cumul_dead = np.zeros(len(dead))
+    cumul_dead = list(itertools.accumulate(dead))
     
-    for i in range(1, len(dead)):
-        cumul_dead[i] = cumul_dead[i-1] + dead[i]
-    
+    # Get cumulative recoveries and set the first number to the initial immune population
     cumul_recov = N - np.array(sick) - np.array(cumul_dead) - np.array(susceptible)
     cumul_recov[0] = num_immune
 
@@ -213,7 +229,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     return p_results
 
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
-                                   init_sick_input.value, illness_input.value, infectious_range.value_throttled, 
+                                   init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
 
 # For horizontal orientation
@@ -231,7 +247,7 @@ def update_r0(event):
 
 def update_results(event): 
     layout[2][2].object = run_plot_simulation(N_input.value, R0_input.value, 
-                                   init_sick_input.value, illness_input.value, infectious_range.value_throttled, 
+                                   init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
     
 R0_input.param.watch(update_r0, 'value')
@@ -239,7 +255,7 @@ N_input.param.watch(update_r0, 'value')
 
 R0_input.param.watch(update_results, 'value')
 N_input.param.watch(update_results, 'value')
-init_sick_input.param.watch(update_results, 'value')
+init_sick_slider.param.watch(update_results, 'value_throttled')
 illness_input.param.watch(update_results, 'value')
 infectious_range.param.watch(update_results, 'value_throttled')
 death_rate_slider.param.watch(update_results, 'value_throttled')
