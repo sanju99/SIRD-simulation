@@ -1,1 +1,1 @@
-# Simulating the Spread of a Disease
+## Simulating the Spread of a Disease
