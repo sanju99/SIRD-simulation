@@ -1,18 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.8.0
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# +
 import numpy as np
 import pandas as pd
 import math
@@ -26,8 +11,6 @@ pn.extension()
 
 bokeh.io.output_notebook()
 
-
-# -
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death):
     
@@ -85,7 +68,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
 
     return (num_sick, num_immune, num_dead, num_uninfected)
 
-# +
+
 R0_input = pn.widgets.TextInput(name=u'R\u2080', value='2.5')
 N_input = pn.widgets.TextInput(name='Population Size', value='10000')
 
@@ -245,7 +228,7 @@ layout = pn.Column(
     )
 
 
-# +
+
 def update_r0(event): 
     layout[2][0].object = plot_r0(R0_input.value, N_input.value)
 
@@ -264,7 +247,7 @@ illness_input.param.watch(update_results, 'value')
 infectious_range.param.watch(update_results, 'value_throttled')
 death_rate_slider.param.watch(update_results, 'value_throttled')
 immune_slider.param.watch(update_results, 'value_throttled')
-# -
+
 
 layout.servable()
 
