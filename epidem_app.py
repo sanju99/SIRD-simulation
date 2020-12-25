@@ -12,7 +12,7 @@ pn.extension()
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death):
     
-    # Every new sick person infects their people on the first day
+    # Count the number of new infections at this time step (a day)
     num_new_infected = 0
     
     # Make drawing list based on the death rate. 
@@ -23,9 +23,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
         
     # Get indices of all sick people. We only do stuff with people who are infected right now
     infected_indices = [i for i, x in enumerate(people_array) if x == -1]
-    
-    min_infect, max_infect = infectious_duration
-    
+        
     for num in infected_indices:
             
         # If they are above the duration, then set them to 1, which indicates that the illness is finished
@@ -234,6 +232,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
 
     return p_results
 
+# Make the plot using the default widget parameters
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
@@ -270,6 +269,7 @@ def update_results(event):
     plot2.title.text_font_size = '14pt'
     layout[2][2].object = plot2
     
+# Set up watches to monitor the states of all the parameters
 R0_input.param.watch(update_r0, 'value')
 N_input.param.watch(update_r0, 'value')
 
@@ -281,5 +281,5 @@ infectious_range.param.watch(update_results, 'value_throttled')
 death_rate_slider.param.watch(update_results, 'value_throttled')
 immune_slider.param.watch(update_results, 'value_throttled')
 
-
+# Make the app
 layout.servable()
