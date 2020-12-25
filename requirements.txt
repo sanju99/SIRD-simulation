@@ -4,4 +4,3 @@ bokeh
 iqplot
 panel
 holoviews
-math
