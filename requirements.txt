@@ -1,6 +1,5 @@
 bebi103==0.1.1
 bokeh==2.2.1
-holoviews @ file:///tmp/build/80754af9/holoviews_1600379285602/work
 holoviz==0.11.6
 hvplot==0.6.0
 ipywidgets==7.5.1
