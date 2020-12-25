@@ -144,7 +144,7 @@ def plot_r0(R0, N):
             R0_input.param.value, 
             init_sick_slider.param.value_throttled, 
             illness_input.param.value,
-            infectious_range.param.value,
+            infectious_range.param.value_throttled,
             death_rate_slider.param.value_throttled,
             immune_slider.param.value_throttled)
 def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_immune):
