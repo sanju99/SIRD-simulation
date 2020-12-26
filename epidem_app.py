@@ -66,7 +66,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
 
 
 R0_input = pn.widgets.TextInput(name=u'R\u2080', value='2.5')
-N_input = pn.widgets.TextInput(name='Population Size', value='10000')
+N_input = pn.widgets.TextInput(name='Population Size', value='1000')
 
 illness_input = pn.widgets.TextInput(name='Duration of Illness (days)', value='14')
 
