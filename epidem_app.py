@@ -27,10 +27,10 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
     for num in infected_indices:
             
         # If they are above the duration, then set them to 1, which indicates that the illness is finished
-        if days_sick[num] >= sick_duration:
+        if days_sick[num] > sick_duration:
             people_array[num] = 1
             
-            # Randomly draw to determine if they die (given that they've finished the illness)
+            # For the people who finished the illness, draw a random number to determine whether or not they die
             if np.random.choice(draw_lst) == 1:
                 num_dead += 1
 
