@@ -38,7 +38,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
         elif infectious_duration[0] <= days_sick[num] <= infectious_duration[1]:
 
             # They infect the same number of people on each day of the infectious duration
-            num_new_infected += np.ceil(r0[num] / (infectious_duration[1] - infectious_duration[0]))
+            num_new_infected += np.round(r0[num] / (infectious_duration[1] - infectious_duration[0]))
             
             days_sick[num] += 1
 
