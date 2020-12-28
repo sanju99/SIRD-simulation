@@ -100,7 +100,7 @@ init_sick_slider = pn.widgets.IntSlider(
 # Create throttled infectious period widget 
 infectious_range = pn.widgets.RangeSlider(
     name='Duration of Infectious Period (days)', 
-    start=0,
+    start=1,
     end=14,
     step=1,
     value=(1, 6),
