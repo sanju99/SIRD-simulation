@@ -1,6 +1,6 @@
 numpy
 pandas
 bokeh
+itertools
 iqplot
 panel
-holoviews
