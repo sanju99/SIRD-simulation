@@ -115,9 +115,11 @@ def update_infectious_range(duration):
 @pn.depends(N_input.param.value, watch=True)
 def update_init_sick(population):
     init_sick_slider.end = int(0.01*int(population))
+    
+button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
 left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
-middle_col = pn.Column(init_sick_slider, immune_slider, width=250)
+middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
 right_col = pn.Column(illness_input, infectious_range, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
@@ -132,8 +134,8 @@ def plot_r0(R0, N):
 
     p = iqplot.histogram(r0,
                          rug=False,
-                         height=400,
-                         width=500,
+                         height=450,
+                         width=600,
                          x_axis_label="Number of Contacts Infected")
     
     p.add_layout(bokeh.models.Title(text=f"Population = {N},  R\u2080 = {R0}", text_font_size="12pt"), 'above')
@@ -206,7 +208,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Width of the lines
     w = 2
 
-    p_results = bokeh.plotting.figure(height=400, width=775,
+    p_results = bokeh.plotting.figure(height=450, width=775,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Simulation Results",
@@ -238,18 +240,21 @@ plot_results = run_plot_simulation(N_input.value, R0_input.value,
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
 
 # For horizontal orientation
-layout = pn.Column(
-        widgets,
-        pn.Spacer(height=10),
-        pn.Row(plot_r0(R0_input.value, N_input.value), pn.Spacer(width=30), 
-               plot_results)
-    )
+layout = pn.Row(pn.Spacer(width=50),
+                pn.Column(
+                    pn.Row(pn.layout.HSpacer(), widgets, pn.layout.HSpacer()),
+                    pn.Spacer(height=10),
+                    pn.Row(plot_r0(R0_input.value, N_input.value), 
+                           pn.Spacer(width=30), 
+                           plot_results,
+                           )
+                )
+        )
 
-
-
+# the next two functions are dependent on the button
 def update_r0(event): 
     
-    layout[2][0].object = plot_r0(R0_input.value, N_input.value)
+    layout[1][2][0].object = plot_r0(R0_input.value, N_input.value)
 
 def update_results(event): 
     
@@ -260,26 +265,19 @@ def update_results(event):
                                       toolbar_location="above")
     
     plot1.title.text_font_size = '14pt'
-    layout[2][2].object = plot1
+    layout[1][2][-1].object = plot1
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
     
     plot2.title.text_font_size = '14pt'
-    layout[2][2].object = plot2
+    layout[1][2][-1].object = plot2
     
-# Set up watches to monitor the states of all the parameters
-R0_input.param.watch(update_r0, 'value')
-N_input.param.watch(update_r0, 'value')
-
-R0_input.param.watch(update_results, 'value')
-N_input.param.watch(update_results, 'value')
-init_sick_slider.param.watch(update_results, 'value_throttled')
-illness_input.param.watch(update_results, 'value')
-infectious_range.param.watch(update_results, 'value_throttled')
-death_rate_slider.param.watch(update_results, 'value_throttled')
-immune_slider.param.watch(update_results, 'value_throttled')
+    
+# link the functions to the button
+button.on_click(update_r0)
+button.on_click(update_results)
 
 # Make the app
 layout.servable()
