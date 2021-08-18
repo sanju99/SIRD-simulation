@@ -1,6 +1,5 @@
 numpy
 pandas
-itertools
 bokeh
 iqplot
 panel

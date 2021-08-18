@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import itertools
 
 import bokeh.io
 import bokeh.plotting
@@ -196,7 +195,10 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     sick, immune, dead, susceptible = list(zip(*results))
     
     # Get cumulative deaths, rather than deaths on each day
-    cumul_dead = list(itertools.accumulate(dead))
+    cumul_dead = [dead[0]] 
+
+    for i in range(len(dead)-1):
+        cumul_dead.append(cumul_dead[i] + dead[i+1])
     
     # Get cumulative recoveries and set the first number to the initial immune population
     cumul_recov = N - np.array(sick) - np.array(cumul_dead) - np.array(susceptible)
