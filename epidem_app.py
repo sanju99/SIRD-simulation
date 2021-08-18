@@ -10,6 +10,8 @@ import iqplot
 import panel as pn
 pn.extension()
 
+plot_height = 500
+plot_width = 825
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death):
     
@@ -135,8 +137,8 @@ def plot_r0(R0, N):
 
     p = iqplot.histogram(r0,
                          rug=False,
-                         height=450,
-                         width=600,
+                         height=plot_height,
+                         width=650,
                          x_axis_label="Number of Contacts Infected")
     
     p.add_layout(bokeh.models.Title(text=f"Population = {N},  R\u2080 = {R0}", text_font_size="12pt"), 'above')
@@ -206,12 +208,12 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
                                  "cumul_dead": cumul_dead, 
                                  "susceptible": susceptible})
 
-    source = bokeh.models.ColumnDatasource(df)
+    source = bokeh.models.ColumnDataSource(df)
     
     # Width of the lines
     w = 2
 
-    p_results = bokeh.plotting.figure(height=450, width=775,
+    p_results = bokeh.plotting.figure(height=plot_height, width=plot_width,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Simulation Results",
@@ -234,6 +236,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     p_results.xgrid.visible = False
     p_results.title.text_font_size = '14pt'
     p_results.legend.click_policy="hide"
+    p_results
 
     return p_results
 
@@ -261,7 +264,7 @@ def update_r0(event):
 
 def update_results(event): 
     
-    plot1 = bokeh.plotting.figure(height=450, width=775,
+    plot1 = bokeh.plotting.figure(height=plot_height, width=plot_width,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Loading...",
@@ -269,6 +272,9 @@ def update_results(event):
     
     # make an empty dataframe to plot phantom data
     phantom_source = bokeh.models.ColumnDataSource(data=dict(sick=[], recovered=[], cumul_dead=[], susceptible=[]))
+    
+    # Width of the lines
+    w = 2
     
     r1 = plot1.line(x="day", y="sick", source=phantom_source, line_width=w)
     r2 = plot1.line(x="day", y="recovered", source=phantom_source, color="green", line_width=w)
@@ -287,6 +293,8 @@ def update_results(event):
     plot1.xgrid.visible = False
     
     plot1.title.text_font_size = '14pt'
+    plot1.sizing_mode = 'scale_both'
+    
     layout[1][2][-1].object = plot1
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
