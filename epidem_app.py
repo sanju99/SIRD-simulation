@@ -293,7 +293,6 @@ def update_results(event):
     plot1.xgrid.visible = False
     
     plot1.title.text_font_size = '14pt'
-    plot1.sizing_mode = 'scale_both'
     
     layout[1][2][-1].object = plot1
     
