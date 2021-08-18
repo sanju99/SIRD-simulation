@@ -4,6 +4,7 @@ import itertools
 
 import bokeh.io
 import bokeh.plotting
+import bokeh.models
 import iqplot
 
 import panel as pn
@@ -205,6 +206,8 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
                                  "cumul_dead": cumul_dead, 
                                  "susceptible": susceptible})
 
+    source = bokeh.models.ColumnDatasource(df)
+    
     # Width of the lines
     w = 2
 
@@ -214,10 +217,10 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
                                       title="Simulation Results",
                                       toolbar_location="above",)
 
-    r1 = p_results.line(x="day", y="sick", source=df, line_width=w)
-    r2 = p_results.line(x="day", y="recovered", source=df, color="green", line_width=w)
-    r3 = p_results.line(x="day", y="cumul_dead", source=df, color="tomato", line_width=w)
-    r4 = p_results.line(x="day", y="susceptible", source=df, color="orange", line_width=w)
+    r1 = p_results.line(x="day", y="sick", source=source, line_width=w)
+    r2 = p_results.line(x="day", y="recovered", source=source, color="green", line_width=w)
+    r3 = p_results.line(x="day", y="cumul_dead", source=source, color="tomato", line_width=w)
+    r4 = p_results.line(x="day", y="susceptible", source=source, color="orange", line_width=w)
 
     legend = bokeh.models.Legend(items=[
         ("Infected"   , [r1]),
@@ -258,11 +261,30 @@ def update_r0(event):
 
 def update_results(event): 
     
-    plot1 = bokeh.plotting.figure(height=400, width=600,
+    plot1 = bokeh.plotting.figure(height=450, width=775,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Loading...",
                                       toolbar_location="above")
+    
+    # make an empty dataframe to plot phantom data
+    phantom_source = bokeh.models.ColumnDataSource(data=dict(sick=[], recovered=[], cumul_dead=[], susceptible=[]))
+    
+    r1 = plot1.line(x="day", y="sick", source=phantom_source, line_width=w)
+    r2 = plot1.line(x="day", y="recovered", source=phantom_source, color="green", line_width=w)
+    r3 = plot1.line(x="day", y="cumul_dead", source=phantom_source, color="tomato", line_width=w)
+    r4 = plot1.line(x="day", y="susceptible", source=phantom_source, color="orange", line_width=w)
+
+    legend = bokeh.models.Legend(items=[
+        ("Infected"   , [r1]),
+        ("Recovered" , [r2]),
+        ("Cumulative Deaths", [r3]),
+        ("Susceptible" , [r4]),
+    ], location="center")
+
+    # Formatting
+    plot1.add_layout(legend, 'right')
+    plot1.xgrid.visible = False
     
     plot1.title.text_font_size = '14pt'
     layout[1][2][-1].object = plot1
