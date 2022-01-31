@@ -135,9 +135,9 @@ def update_init_sick(population):
     
 button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
-left_col = pn.Column(R0_input, N_input, death_rate_slider, transmit_rate_slider, width=250)
+left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
 middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
-right_col = pn.Column(illness_input, infectious_range, width=250)
+right_col = pn.Column(illness_input, infectious_range, transmit_rate_slider, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
 
@@ -316,7 +316,7 @@ def update_results(event):
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   death_rate_slider.value_throttled, immune_slider.value_throttled)
+                                   death_rate_slider.value_throttled, transmit_rate_slider.value_throttled, immune_slider.value_throttled)
     
     plot2.title.text_font_size = '14pt'
     tab1[1][2][-1].object = plot2
