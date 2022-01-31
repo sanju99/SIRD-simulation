@@ -12,16 +12,17 @@ pn.extension()
 plot_height = 500
 plot_width = 825
 
-def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death):
+def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, p_transmit):
     
     # Count the number of new infections at this time step (a day)
     num_new_infected = 0
     
-    # Make drawing list based on the death rate. 
-    draw_lst = list(np.ones(p_death)) + list(np.zeros(100-p_death))
+    # Make drawing lists based on the death and transmission rates. Both are decimals to the hundredth place
+    draw_death = list(np.ones(p_death)) + list(np.zeros(100-p_death))
+    draw_transmit = list(np.ones(p_transmit)) + list(np.zeros(100-p_transmit))
     
     # Count the number of deaths at this time step
-    num_dead = 0
+    num_new_dead = 0
         
     # Get indices of all sick people. We only do stuff with people who are infected right now
     infected_indices = [i for i, x in enumerate(people_array) if x == -1]
@@ -33,8 +34,8 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
             people_array[num] = 1
             
             # For the people who finished the illness, draw a random number to determine whether or not they die
-            if np.random.choice(draw_lst) == 1:
-                num_dead += 1
+            if np.random.choice(draw_death) == 1:
+                num_new_dead += 1
 
         # If they are still in the infectious period, inclusive
         elif infectious_duration[0] <= days_sick[num] <= infectious_duration[1]:
@@ -48,23 +49,28 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
         else:
             days_sick[num] += 1
                 
-    # Get the indices of the newly infected people
+    # Get the indices of the people who came into contact with infectious individuals 
     new_indices = np.random.randint(len(people_array), size=int(num_new_infected))
     
-    # If they have never been infected, make them sick
+    # If they have never been infected, make them sick according to a coin flip probability
     for i in range(len(new_indices)):
+        
+        # if they are susceptible (never been infected before)
         if people_array[new_indices[i]] == 0:
-            people_array[new_indices[i]] = -1
-           
+            
+            # take into account transmission probability
+            if np.random.choice(draw_transmit) == 1:
+                people_array[new_indices[i]] = -1           
     
-    num_recovered = list(people_array).count(1)
+    # this includes people who recovered and people who died
+    num_immune = list(people_array).count(1)
     
-    # num_dead already determined above
-    num_immune = num_recovered - num_dead
-    num_uninfected = list(people_array).count(0)
-    num_sick = list(people_array).count(-1)
+    # number of newly dead people already determined above
+    num_recovered = num_immune - num_new_dead
+    num_susceptible = list(people_array).count(0)
+    num_infected = list(people_array).count(-1)
 
-    return (num_sick, num_immune, num_dead, num_uninfected)
+    return (num_infected, num_recovered, num_new_dead, num_susceptible)
 
 
 R0_input = pn.widgets.TextInput(name=u'R\u2080', value='2.5')
