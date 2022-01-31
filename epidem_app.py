@@ -138,7 +138,7 @@ button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
 left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
 middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
-right_col = pn.Column(illness_input, infectious_range, pn.Spacer(height=10), transmit_rate_slider, width=250)
+right_col = pn.Column(illness_input, infectious_range, pn.Spacer(height=5), transmit_rate_slider, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
 
@@ -335,6 +335,25 @@ def update_results(event):
 button.on_click(update_r0)
 button.on_click(update_results)
 
+# Create an HTML page for the first tab
+
+html_pane = pn.pane.HTML("""
+<h1><b>Epidemiological Simulation and the SEIRD Model</b></h1>
+
+<br>
+<br>
+
+<div style='text-align: justify;'>
+Mathematical models are very useful in epidemiology to forecast the spread of a disease and determine how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
+</div>
+
+<h2><b>Simulation</b></h2>
+
+<h2><b>SEIRD Model</b></h2>
+
+""", style={'background-color': '#F6F6F6', 'border': '2px solid black',
+            'border-radius': '5px', 'padding': '10px'})
+
 # Make the app
-layout = pn.Tabs(("Simulation", tab1))
+layout = pn.Tabs(("About", html_pane), ("Simulation", tab1))
 layout.servable()
