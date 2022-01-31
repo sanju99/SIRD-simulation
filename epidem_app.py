@@ -248,7 +248,7 @@ plot_results = run_plot_simulation(N_input.value, R0_input.value,
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
 
 # For horizontal orientation
-layout = pn.Row(pn.Spacer(width=50),
+tab1 = pn.Row(pn.Spacer(width=50),
                 pn.Column(
                     pn.Row(pn.layout.HSpacer(), widgets, pn.layout.HSpacer()),
                     pn.Spacer(height=10),
@@ -262,7 +262,7 @@ layout = pn.Row(pn.Spacer(width=50),
 # the next two functions are dependent on the button
 def update_r0(event): 
     
-    layout[1][2][0].object = plot_r0(R0_input.value, N_input.value)
+    tab1[1][2][0].object = plot_r0(R0_input.value, N_input.value)
 
 def update_results(event): 
     
@@ -296,14 +296,14 @@ def update_results(event):
     
     plot1.title.text_font_size = '14pt'
     
-    layout[1][2][-1].object = plot1
+    tab1[1][2][-1].object = plot1
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    death_rate_slider.value_throttled, immune_slider.value_throttled)
     
     plot2.title.text_font_size = '14pt'
-    layout[1][2][-1].object = plot2
+    tab1[1][2][-1].object = plot2
     
     
 # link the functions to the button
@@ -311,4 +311,5 @@ button.on_click(update_r0)
 button.on_click(update_results)
 
 # Make the app
+layout = pn.Tabs(("Simulation", tab1))
 layout.servable()
