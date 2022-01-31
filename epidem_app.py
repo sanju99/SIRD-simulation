@@ -11,7 +11,7 @@ pn.extension()
 
 plot_height = 500
 total_width = 1475
-plot_width = 875
+plot_width = 925
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, p_transmit):
     
@@ -231,12 +231,20 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     
     # Width of the lines
     w = 2
+    
+    TOOLTIPS = [
+        ("Infected", "@sick"),
+        ("Susceptible", "@susceptible"),
+        ("Recovered", "@recovered"),
+        ("Cumulative Deaths", "@cumul_dead"),
+    ]
 
     p_results = bokeh.plotting.figure(height=plot_height, width=plot_width,
                                       x_axis_label="Days",
                                       y_axis_label="Number of People",
                                       title="Simulation Results",
-                                      toolbar_location="above",)
+                                      toolbar_location="above",
+                                      tooltips=TOOLTIPS)
 
     r1 = p_results.line(x="day", y="sick", source=source, line_width=w)
     r2 = p_results.line(x="day", y="recovered", source=source, color="green", line_width=w)
@@ -245,9 +253,9 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
 
     legend = bokeh.models.Legend(items=[
         ("Infected"   , [r1]),
+        ("Susceptible" , [r4]),
         ("Recovered" , [r2]),
         ("Cumulative Deaths", [r3]),
-        ("Susceptible" , [r4]),
     ], location="center")
 
     # Formatting
