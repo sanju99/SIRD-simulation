@@ -90,11 +90,11 @@ death_rate_slider = pn.widgets.IntSlider(
 # Create throttled widget for the probability of transmission to an exposed contact
 transmit_rate_slider = pn.widgets.IntSlider(
     name='Transmit Rate (%)', 
-    start=0,
+    start=10,
     end=100,
-    step=1,
-    value=30,
-    value_throttled=30)
+    step=10,
+    value=100,
+    value_throttled=100)
 
 # Create throttled widget for the number of immune people initially
 immune_slider = pn.widgets.IntSlider(
