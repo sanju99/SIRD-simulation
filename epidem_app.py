@@ -236,7 +236,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
         ("Infected", "@sick"),
         ("Susceptible", "@susceptible"),
         ("Recovered", "@recovered"),
-        ("Cumulative Deaths", "@cumul_dead"),
+        ("Deaths", "@cumul_dead"),
     ]
 
     p_results = bokeh.plotting.figure(height=plot_height, width=plot_width,
@@ -255,7 +255,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
         ("Infected"   , [r1]),
         ("Susceptible" , [r4]),
         ("Recovered" , [r2]),
-        ("Cumulative Deaths", [r3]),
+        ("Deaths", [r3]),
     ], location="center")
 
     # Formatting
