@@ -138,7 +138,7 @@ button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
 left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
 middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
-right_col = pn.Column(illness_input, infectious_range, transmit_rate_slider, width=250)
+right_col = pn.Column(illness_input, infectious_range, pn.Spacer(height=10), transmit_rate_slider, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
 
