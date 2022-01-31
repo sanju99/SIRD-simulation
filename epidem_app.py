@@ -87,6 +87,15 @@ death_rate_slider = pn.widgets.IntSlider(
     value=5,
     value_throttled=5)
 
+# Create throttled widget for the probability of transmission to an exposed contact
+transmit_rate_slider = pn.widgets.IntSlider(
+    name='Transmit Rate (%)', 
+    start=0,
+    end=100,
+    step=1,
+    value=30,
+    value_throttled=30)
+
 # Create throttled widget for the number of immune people initially
 immune_slider = pn.widgets.IntSlider(
     name='Initial Immunity (%)', 
@@ -126,7 +135,7 @@ def update_init_sick(population):
     
 button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
-left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
+left_col = pn.Column(R0_input, N_input, death_rate_slider, transmit_rate_slider, width=250)
 middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
 right_col = pn.Column(illness_input, infectious_range, width=250)
 
@@ -158,8 +167,9 @@ def plot_r0(R0, N):
             illness_input.param.value,
             infectious_range.param.value_throttled,
             death_rate_slider.param.value_throttled,
+            transmit_rate_slider.param.value_throttled,
             immune_slider.param.value_throttled)
-def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_immune):
+def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_transmit, p_immune):
 
     R0 = float(R0)
     N = int(N)
@@ -194,7 +204,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Call the infect_more_people function until there are no more sick people (epidemic stops)
     while list(people_array).count(-1) != 0:
 
-        results.append(infect_more_people(r0, people_array, days_sick, illness_duration, infectious_duration, p_death))
+        results.append(infect_more_people(r0, people_array, days_sick, illness_duration, infectious_duration, p_death, p_transmit))
 
         num_days += 1
 
@@ -251,7 +261,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
 # Make the plot using the default widget parameters
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   death_rate_slider.value_throttled, immune_slider.value_throttled)
+                                   death_rate_slider.value_throttled, transmit_rate_slider.value_throttled, immune_slider.value_throttled)
 
 # For horizontal orientation
 tab1 = pn.Row(pn.Spacer(width=50),
