@@ -10,7 +10,8 @@ import panel as pn
 pn.extension()
 
 plot_height = 500
-plot_width = 825
+total_width = 1475
+plot_width = 875
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, p_transmit):
     
@@ -90,9 +91,9 @@ death_rate_slider = pn.widgets.IntSlider(
 # Create throttled widget for the probability of transmission to an exposed contact
 transmit_rate_slider = pn.widgets.IntSlider(
     name='Transmit Rate (%)', 
-    start=10,
+    start=1,
     end=100,
-    step=10,
+    step=1,
     value=100,
     value_throttled=100)
 
@@ -152,7 +153,7 @@ def plot_r0(R0, N):
     p = iqplot.histogram(r0,
                          rug=False,
                          height=plot_height,
-                         width=650,
+                         width=(total_width-plot_width),
                          x_axis_label="Number of Contacts Infected")
     
     p.add_layout(bokeh.models.Title(text=f"Population = {N},  R\u2080 = {R0}", text_font_size="12pt"), 'above')
