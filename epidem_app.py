@@ -338,21 +338,24 @@ button.on_click(update_results)
 # Create an HTML page for the first tab
 
 html_pane = pn.pane.HTML("""
-<h1><b>Epidemiological Simulation and the SEIRD Model</b></h1>
+
+<center><h1><b>Epidemiological Simulation and the SEIRD Model</b></h1></center>
 
 <br>
 <br>
 
-<div style='text-align: justify;'>
+<div style='text-align: justify; font-size:20pt;'>
 Mathematical models are very useful in epidemiology to forecast the spread of a disease and determine how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
 </div>
 
-<h2><b>Simulation</b></h2>
+<center><h2><b>Simulation</b></h2></center>
 
-<h2><b>SEIRD Model</b></h2>
+<center><h2><b>SEIRD Model</b></h2></center>
 
-""", style={'background-color': '#F6F6F6', 'border': '2px solid black',
-            'border-radius': '5px', 'padding': '10px'})
+""",
+#                         style={'background-color': '#F6F6F6', 'border': '2px solid black',
+#             'border-radius': '5px', 'padding': '10px'}
+                        )
 
 # Make the app
 layout = pn.Tabs(("About", html_pane), ("Simulation", tab1))
