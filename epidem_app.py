@@ -254,12 +254,12 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     p_results.legend.click_policy="hide"
     p_results
 
-    return p_results
+    return p_results, cumul_dead[-1]
 
 # Make the plot using the default widget parameters
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled)
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled)[0]
 
 # For horizontal orientation
 tab1 = pn.Row(pn.Spacer(width=50),
@@ -269,7 +269,8 @@ tab1 = pn.Row(pn.Spacer(width=50),
                     pn.Row(plot_r0(R0_input.value, N_input.value), 
                            pn.Spacer(width=30), 
                            plot_results,
-                           )
+                           ),
+                    pn.pane.Markdown("Total Deaths: 0")
                 )
         )
 
@@ -312,12 +313,16 @@ def update_results(event):
     
     tab1[1][2][-1].object = plot1
     
-    plot2 = run_plot_simulation(N_input.value, R0_input.value, 
+    final_res = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
                                    fatality_rate_slider.value_throttled, immune_slider.value_throttled)
     
+    plot2 = final_res[0]    
     plot2.title.text_font_size = '14pt'
     tab1[1][2][-1].object = plot2
+    
+    # total number of deaths
+    tab1[1][3] = pn.pane.Markdown(f"Total Deaths: {final_res[1]}")
     
     
 # link the functions to the button
