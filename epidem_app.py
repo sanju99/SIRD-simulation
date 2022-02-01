@@ -283,8 +283,8 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
 # Make the plot using the default widget parameters
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled, birth_rate_slider.param.value_throttled,
-                                   death_rate_slider.param.value_throttled)
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled, 
+                                   birth_rate_slider.value_throttled, death_rate_slider.value_throttled)
 
 # For horizontal orientation
 tab1 = pn.Row(pn.Spacer(width=50),
@@ -339,8 +339,8 @@ def update_results(event):
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled, birth_rate_slider.param.value_throttled,
-                                death_rate_slider.param.value_throttled)
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled,
+                                birth_rate_slider.value_throttled, death_rate_slider.value_throttled)
     
     plot2.title.text_font_size = '14pt'
     tab1[1][2][-1].object = plot2
