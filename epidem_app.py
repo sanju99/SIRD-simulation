@@ -341,7 +341,7 @@ Mathematical models are very useful in epidemiology to forecast the spread of a 
 The interactive tool simulates a simple outbreak spreading through a closed population. It is a <b>stochastic model</b>, meaning that there is an element of randomness. Initializing the simulation with the same parameters can lead to different solutions because of the randomness.
 The simulation makes the following assumptions:
 <ul>
-    <li>This is a semi-closed population: people are born and die of causes other than the spreading infectious disease, but no people immigrate into the population and no one emigrates out of it.</li>
+    <li>This is a closed population: no people immigrate into the population and no one emigrates out of it, and we assume that the population remains constant.</li>
     <li>The population is well-mixed: the probability of a person getting infected is based only on the number of contacts they have, but the simulation doesn't take geography into account.</li>
     <li>When people recover from the infection, they are immune for life and will not be infected or able to transmit the disease again.</li>
 </ul>
@@ -350,6 +350,9 @@ The epidemic ends when the number of infected cases drops to 0. Based on the siz
 </div>
 </center>
 <center>
+
+<br>
+
 <h1><b>SEIRD Model</b></h1><br>
 <div style='width:80%; text-align: justify; font-size:16pt;'>
 The SEIRD model is a type of <b>compartmental model</b> that considers only the overall behavior of a group of people. It is different from an <b>individual model</b>, which takes into account the actions of individual people. The simulation described above does treat people as individuals, but the model only considers the following large groups: 
