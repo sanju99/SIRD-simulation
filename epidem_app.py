@@ -158,9 +158,7 @@ def plot_r0(R0, N):
             illness_input.param.value,
             infectious_range.param.value_throttled,
             fatality_rate_slider.param.value_throttled,
-            immune_slider.param.value_throttled,
-            birth_rate_slider.param.value_throttled,
-            death_rate_slider.param.value_throttled)
+            immune_slider.param.value_throttled)
 def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_immune):
 
     R0 = float(R0)
