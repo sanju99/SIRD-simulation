@@ -344,13 +344,13 @@ html_pane = pn.pane.HTML("""
 <br>
 <br>
 
-<div style='text-align: justify; font-size:20pt;'>
-Mathematical models are very useful in epidemiology to forecast the spread of a disease and determine how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
+<div style='text-align: justify; font-size:16pt;'>
+Mathematical models are very useful in epidemiology to forecast the spread of a disease and predict how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
 </div>
 
-<center><h2><b>Simulation</b></h2></center>
+<center><h1><b>Simulation</b></h1></center>
 
-<center><h2><b>SEIRD Model</b></h2></center>
+<center><h1><b>SEIRD Model</b></h1></center>
 
 """,
 #                         style={'background-color': '#F6F6F6', 'border': '2px solid black',
