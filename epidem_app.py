@@ -18,9 +18,6 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
     # Count the number of new infections at this time step (a day)
     num_new_infected = 0
     
-    # Make drawing list based on the death rate, which is a decimal to the hundredth place
-    draw_death = list(np.ones(p_death)) + list(np.zeros(100-p_death))
-    
     # Count the number of deaths at this time step
     num_new_dead = 0
         
@@ -32,6 +29,15 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
         # If they are above the duration, then set them to 1, which indicates that the illness is finished
         if days_sick[num] > sick_duration:
             people_array[num] = 1
+            
+            # increase the risk of death if the number of sick people is more than 50% of the population (overwhelmed healthcare system)
+            if list(people_array).count(-1) > 0.25 * len(people_array):
+                p_actual_death = int(min(100, p_death*2))
+            else:
+                p_actual_death = p_death
+           
+            # Make drawing list based on the death rate
+            draw_death = list(np.ones(p_actual_death)) + list(np.zeros(100-p_actual_death))
             
             # For the people who finished the illness, draw a random number to determine whether or not they die
             if np.random.choice(draw_death) == 1:
