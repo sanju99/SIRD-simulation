@@ -257,9 +257,11 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     return p_results, cumul_dead[-1]
 
 # Make the plot using the default widget parameters
-plot_results = run_plot_simulation(N_input.value, R0_input.value, 
+init_res = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled)[0]
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled)
+
+plot_results = init_res[0]
 
 # For horizontal orientation
 tab1 = pn.Row(pn.Spacer(width=50),
@@ -270,7 +272,7 @@ tab1 = pn.Row(pn.Spacer(width=50),
                            pn.Spacer(width=30), 
                            plot_results,
                            ),
-                    pn.pane.Markdown(""" <center> ## Total Deaths: 0 </center>""")
+                    pn.pane.Markdown(f""" <center> Total Deaths: {init_res[1]} </center>""", style="font-size:20pt")
                 )
         )
 
@@ -322,7 +324,7 @@ def update_results(event):
     tab1[1][2][-1].object = plot2
     
     # total number of deaths
-    tab1[1][3] = pn.pane.Markdown(f""" <center> ## Total Deaths: {final_res[1]} </center> """)
+    tab1[1][3] = pn.pane.Markdown(f""" <center> ## Total Deaths: {final_res[1]} </center> """, style="font-size:20pt")
     
     
 # link the functions to the button
