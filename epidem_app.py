@@ -314,7 +314,7 @@ def update_results(event):
     plot1.title.text_font_size = '14pt'
     
     tab1[1][2][-1].object = plot1
-    tab1[1][3].object = pn.pane.Markdown(""" <center> ## Total Deaths: 0 </center> """, style="font-size:20pt")
+    tab1[1][3].object = pn.pane.HTML(""" <center> Total Deaths: 0 </center>""", style={'font-size': '20pt'})
     
     final_res = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
