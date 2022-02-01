@@ -369,11 +369,22 @@ The epidemic ends when the number of infected cases drops to 0. Based on the siz
 
 </center>
 
-<center><h1><b>SEIRD Model</b></h1></center><br>
+<center>
+<h1><b>SEIRD Model</b></h1><br>
 
 <div style='width:80%; text-align: justify; font-size:16pt;'>
-The SEIRD model is a type of <b>compartmental model</b>. It puts people into compartments and looks at the overall behavior of that group of people using statistics. It is different from an <b>individual model</b>, which takes into account the actions of individual people. The simulation described above does treat people as individuals. 
+The SEIRD model is a type of <b>compartmental model</b> that considers only the overall behavior of a group of people. It is different from an <b>individual model</b>, which takes into account the actions of individual people. The simulation described above does treat people as individuals, but the model only considers the following large groups: 
+
+<ul>
+    <li><b>Susceptible</b>: Can be infected.</li>
+    <li><b>Exposed</b>: Have been in contact with an infected person, but can not yet spread the infection to others.</li>
+    <li><b>Infectious</b>: Currently infectious (able to spread the infection to others).</li>
+    <li><b>Recovered</b>: Recovered from the infection and are now totally immune (unable to get infected again).</li>
+    <li><b>Dead</b>: Died of the infection.</li>
+</ul>
+
 </div>
+</center>
 
 """,
 #                         style={'background-color': '#F6F6F6', 'border': '2px solid black',
