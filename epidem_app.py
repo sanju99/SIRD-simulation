@@ -74,7 +74,7 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
     # add births to susceptible population, add deaths to dead population
     # keep it simple, assume people in all 4 groups are equally likely to die
     num_susceptible += int(birth_rate / 1000 * total_people)
-    num_new_death += int(death_rate / 1000 * total_people)
+    num_new_dead += int(death_rate / 1000 * total_people)
 
     return (num_infected, num_recovered, num_new_dead, num_susceptible)
 
