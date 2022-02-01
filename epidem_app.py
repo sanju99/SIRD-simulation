@@ -270,7 +270,7 @@ tab1 = pn.Row(pn.Spacer(width=50),
                            pn.Spacer(width=30), 
                            plot_results,
                            ),
-                    pn.pane.Markdown("Total Deaths: 0")
+                    pn.pane.Markdown(""" <center> ## Total Deaths: 0 </center>""")
                 )
         )
 
@@ -322,7 +322,7 @@ def update_results(event):
     tab1[1][2][-1].object = plot2
     
     # total number of deaths
-    tab1[1][3] = pn.pane.Markdown(f"Total Deaths: {final_res[1]}")
+    tab1[1][3] = pn.pane.Markdown(f""" <center> ## Total Deaths: {final_res[1]} </center> """)
     
     
 # link the functions to the button
