@@ -14,6 +14,9 @@ total_width = 1475
 plot_width = 925
 
 def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, birth_rate, death_rate):
+    '''
+    This function performs a single timestep in the simulation. 
+    '''
     
     # Count the number of new infections at this time step (a day)
     num_new_infected = 0
