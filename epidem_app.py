@@ -13,14 +13,13 @@ plot_height = 500
 total_width = 1475
 plot_width = 925
 
-def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, p_transmit):
+def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_duration, p_death, birth_rate, death_rate):
     
     # Count the number of new infections at this time step (a day)
     num_new_infected = 0
     
-    # Make drawing lists based on the death and transmission rates. Both are decimals to the hundredth place
+    # Make drawing list based on the death rate, which is a decimal to the hundredth place
     draw_death = list(np.ones(p_death)) + list(np.zeros(100-p_death))
-    draw_transmit = list(np.ones(p_transmit)) + list(np.zeros(100-p_transmit))
     
     # Count the number of deaths at this time step
     num_new_dead = 0
@@ -53,23 +52,29 @@ def infect_more_people(r0, people_array, days_sick, sick_duration, infectious_du
     # Get the indices of the people who came into contact with infectious individuals 
     new_indices = np.random.randint(len(people_array), size=int(num_new_infected))
     
-    # If they have never been infected, make them sick according to a coin flip probability
+    # If they have never been infected, make them sick. No probability here because we're already using R for each person to determine how many contacts they infect
     for i in range(len(new_indices)):
         
-        # if they are susceptible (never been infected before)
+        # if they are susceptible (never been infected before). Leave immune people alone at this step
         if people_array[new_indices[i]] == 0:
-            
-            # take into account transmission probability
-            if np.random.choice(draw_transmit) == 1:
-                people_array[new_indices[i]] = -1           
+            people_array[new_indices[i]] = -1           
     
     # this includes people who recovered and people who died
     num_immune = list(people_array).count(1)
     
     # number of newly dead people already determined above
     num_recovered = num_immune - num_new_dead
+    
     num_susceptible = list(people_array).count(0)
     num_infected = list(people_array).count(-1)
+    
+    total_people = num_infected + num_recovered + num_new_dead + num_susceptible
+    
+    # birth and death rates are per year, and the time steps for this simulation are days
+    # add births to susceptible population, add deaths to dead population
+    # keep it simple, assume people in all 4 groups are equally likely to die
+    num_susceptible += int(birth_rate / 1000 * total_people)
+    num_new_death += int(death_rate / 1000 * total_people)
 
     return (num_infected, num_recovered, num_new_dead, num_susceptible)
 
@@ -80,22 +85,29 @@ N_input = pn.widgets.TextInput(name='Population Size', value='1000')
 illness_input = pn.widgets.TextInput(name='Duration of Illness (days)', value='14')
 
 # Create throttled widget for the death rate
-death_rate_slider = pn.widgets.IntSlider(
-    name='Death Rate (%)', 
+fatality_rate_slider = pn.widgets.IntSlider(
+    name='Fatality Rate (%)', 
     start=0,
     end=100,
     step=1,
     value=5,
     value_throttled=5)
 
-# Create throttled widget for the probability of transmission to an exposed contact
-transmit_rate_slider = pn.widgets.IntSlider(
-    name='Transmit Rate (%)', 
-    start=1,
+birth_rate_slider = pn.widgets.IntSlider(
+    name='Birth Rate (per 1,000)', 
+    start=0,
     end=100,
     step=1,
-    value=100,
-    value_throttled=100)
+    value=11,
+    value_throttled=11)
+
+death_rate_slider = pn.widgets.IntSlider(
+    name='Death Rate (per 1,000)', 
+    start=0,
+    end=100,
+    step=1,
+    value=10,
+    value_throttled=10)
 
 # Create throttled widget for the number of immune people initially
 immune_slider = pn.widgets.IntSlider(
@@ -136,9 +148,9 @@ def update_init_sick(population):
     
 button = pn.widgets.Button(name="Update Dashboard", button_type="success")
 
-left_col = pn.Column(R0_input, N_input, death_rate_slider, width=250)
+left_col = pn.Column(R0_input, N_input, fatality_rate_slider, width=250)
 middle_col = pn.Column(pn.Spacer(height=3), init_sick_slider, immune_slider, pn.Spacer(height=3), button, width=250)
-right_col = pn.Column(illness_input, infectious_range, pn.Spacer(height=5), transmit_rate_slider, width=250)
+right_col = pn.Column(illness_input, infectious_range, birth_rate_slider, death_rate_slider, width=250)
 
 widgets = pn.Row(left_col, pn.Spacer(width=20), middle_col, pn.Spacer(width=20), right_col)
 
@@ -167,10 +179,11 @@ def plot_r0(R0, N):
             init_sick_slider.param.value_throttled, 
             illness_input.param.value,
             infectious_range.param.value_throttled,
-            death_rate_slider.param.value_throttled,
-            transmit_rate_slider.param.value_throttled,
-            immune_slider.param.value_throttled)
-def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_transmit, p_immune):
+            fatality_rate_slider.param.value_throttled,
+            immune_slider.param.value_throttled,
+            birth_rate_slider.param.value_throttled,
+            death_rate_slider.param.value_throttled)
+def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration, p_death, p_immune, birth_rate, death_rate):
 
     R0 = float(R0)
     N = int(N)
@@ -205,7 +218,7 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
     # Call the infect_more_people function until there are no more sick people (epidemic stops)
     while list(people_array).count(-1) != 0:
 
-        results.append(infect_more_people(r0, people_array, days_sick, illness_duration, infectious_duration, p_death, p_transmit))
+        results.append(infect_more_people(r0, people_array, days_sick, illness_duration, infectious_duration, p_death, birth_rate, death_rate))
 
         num_days += 1
 
@@ -270,7 +283,8 @@ def run_plot_simulation(N, R0, init_sick, illness_duration, infectious_duration,
 # Make the plot using the default widget parameters
 plot_results = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   death_rate_slider.value_throttled, transmit_rate_slider.value_throttled, immune_slider.value_throttled)
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled, birth_rate_slider.param.value_throttled,
+                                   death_rate_slider.param.value_throttled)
 
 # For horizontal orientation
 tab1 = pn.Row(pn.Spacer(width=50),
@@ -325,7 +339,8 @@ def update_results(event):
     
     plot2 = run_plot_simulation(N_input.value, R0_input.value, 
                                    init_sick_slider.value_throttled, illness_input.value, infectious_range.value_throttled, 
-                                   death_rate_slider.value_throttled, transmit_rate_slider.value_throttled, immune_slider.value_throttled)
+                                   fatality_rate_slider.value_throttled, immune_slider.value_throttled, birth_rate_slider.param.value_throttled,
+                                death_rate_slider.param.value_throttled)
     
     plot2.title.text_font_size = '14pt'
     tab1[1][2][-1].object = plot2
