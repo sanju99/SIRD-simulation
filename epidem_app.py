@@ -339,18 +339,22 @@ button.on_click(update_results)
 
 html_pane = pn.pane.HTML("""
 
-<center><h1><b>Epidemiological Simulation and the SEIRD Model</b></h1></center>
+<center><h1><b>Epidemiological Simulation and the SEIRD Model</b></h1></center><br>
 
-<br>
-<br>
-
-<div style='text-align: justify; font-size:16pt;'>
+<div style='width:80%; text-align: justify; font-size:16pt;'>
 Mathematical models are very useful in epidemiology to forecast the spread of a disease and predict how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
 </div>
 
-<center><h1><b>Simulation</b></h1></center>
+<center><h1><b>Simulation</b></h1></center><br>
 
-<center><h1><b>SEIRD Model</b></h1></center>
+<div style='width:80%; text-align: justify; font-size:16pt;'>
+</div>
+
+<center><h1><b>SEIRD Model</b></h1></center><br>
+
+<div style='width:80%; text-align: justify; font-size:16pt;'>
+The SEIRD model is a type of <b>compartmental model</b>. It puts people into compartments and looks at the overall behavior of that group of people using statistics. It is different from an <b>individual model</b>, which takes into account the actions of individual people. The simulation described above does treat people as individuals. 
+</div>
 
 """,
 #                         style={'background-color': '#F6F6F6', 'border': '2px solid black',
