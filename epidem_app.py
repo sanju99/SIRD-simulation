@@ -341,14 +341,33 @@ html_pane = pn.pane.HTML("""
 
 <center><h1><b>Epidemiological Simulation and the SEIRD Model</b></h1></center><br>
 
+<center>
 <div style='width:80%; text-align: justify; font-size:16pt;'>
 Mathematical models are very useful in epidemiology to forecast the spread of a disease and predict how interventions like vaccination and isolation will affect the course of an epidemic. In this interactive web tool, you can observe the spread of a simulated disease in a closed population under different sets of parameters and compare the results to a mathematical model based on ordinary differential equations. 
 </div>
+</center>
 
 <center><h1><b>Simulation</b></h1></center><br>
 
+<center>
 <div style='width:80%; text-align: justify; font-size:16pt;'>
+The interactive tool simulates a simple outbreak spreading through a closed population. It is a <b>stochastic model</b>, meaning that there is an element of randomness. Initializing the simulation with the same parameters can lead to different solutions because of the randomness.
+
+The simulation makes the following assumptions:
+
+<ul>
+    <li>This is a semi-closed population: people are born and die of causes other than the spreading infectious disease, but no people immigrate into the population and no one emigrates out of it.</li>
+    <li>The population is well-mixed: the probability of a person getting infected is based only on the number of contacts they have, but the simulation doesn't take geography into account.</li>
+    <li>When people recover from the infection, they are immune for life and will not be infected or able to transmit the disease again.</li>
+</ul>
+
+<br>
+
+The epidemic ends when the number of infected cases drops to 0. Based on the size of the population and how the infection transmitted, some susceptible people may remain in the population.
+
 </div>
+
+</center>
 
 <center><h1><b>SEIRD Model</b></h1></center><br>
 
